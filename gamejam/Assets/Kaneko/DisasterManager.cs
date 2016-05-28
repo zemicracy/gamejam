@@ -12,6 +12,7 @@ public class DisasterManager: MonoBehaviour {
         eFlood,     //洪水
         eEarthquake,//地震
         eEruption,  //噴火
+        eTyphoon,   //台風
         eNull
     }
     DisasterType m_type;
@@ -26,21 +27,21 @@ public class DisasterManager: MonoBehaviour {
     //test
     Text m_text;
 
-    float m_animTime = 5;
+    float m_animTime = 10;
 
 
     // Use this for initialization
     void Start () {
         m_animTime = 10;
         m_type = DisasterType.eNull;
-        m_text = transform.FindChild("Text").GetComponent<Text>();
+        m_text = m_field.transform.FindChild("Text").GetComponent<Text>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
         if (Input.GetKeyDown(KeyCode.E))
         {
-            mNextSet(DisasterType.eThunder);
+            mNextSet(DisasterType.eEarthquake);
         }
         if (Input.GetKeyDown(KeyCode.R))
         {
@@ -77,20 +78,15 @@ public class DisasterManager: MonoBehaviour {
         switch (m_type)
         {
             case DisasterType.eThunder:
-                m_text.text = "Thunder";
                 break;
-            case DisasterType.eFlood:
-                m_text.text = "Flood";
-                
+            case DisasterType.eFlood:                
                 break;
             case DisasterType.eEarthquake:
                 float rad = Random.Range(0,360);
-                m_field.transform.position = new Vector3(Mathf.Sin(rad * 180 / Mathf.PI)*m_animTime, Mathf.Cos(rad * 180 / Mathf.PI) * m_animTime, 0)
+                m_field.transform.position = new Vector3(Mathf.Sin(rad * 180 / Mathf.PI) * m_animTime, Mathf.Cos(rad * 180 / Mathf.PI) * m_animTime, 0)
                     + m_stageOrigin;
-                m_text.text = "Earthquake";
                 break;
             case DisasterType.eEruption:
-                m_text.text = "Eruption";
                 break;
             case DisasterType.eNull:
                 break;
@@ -102,8 +98,9 @@ public class DisasterManager: MonoBehaviour {
             m_state = DisasterState.eFin;
         }
         else {
-            m_animTime -= Time.deltaTime;
+            m_animTime -= Time.deltaTime * Time.timeScale;
         }
+        Debug.Log(m_animTime);
     }
     float fade = 0;
     void mStatePrePlay()
@@ -111,7 +108,6 @@ public class DisasterManager: MonoBehaviour {
         switch (m_type)
         {
             case DisasterType.eThunder:
-                m_text.text = "Thunder";
                 var obj = m_field.transform.FindChild("Panel");
                 obj.transform.gameObject.SetActive(true);
                 var color = obj.GetComponent<Image>().color;
@@ -121,17 +117,17 @@ public class DisasterManager: MonoBehaviour {
                     fade = 0.5f;
                 }else
                 {
-                    fade += Time.deltaTime;
+                    fade += Time.deltaTime * Time.timeScale;
                 }
                 break;
             case DisasterType.eFlood:
-                m_text.text = "Flood";
                 break;
             case DisasterType.eEarthquake:
-                m_text.text = "Earthquake";
+                float rad = Random.Range(0, 360);
+                m_field.transform.position = new Vector3(Mathf.Sin(rad * 180 / Mathf.PI), Mathf.Cos(rad * 180 / Mathf.PI), 0)
+                    + m_stageOrigin;
                 break;
             case DisasterType.eEruption:
-                m_text.text = "Eruption";
                 break;
             case DisasterType.eNull:
                 break;
@@ -146,7 +142,6 @@ public class DisasterManager: MonoBehaviour {
         switch (m_type)
         {
             case DisasterType.eThunder:
-                m_text.text = "NewText";
                 var obj = m_field.transform.FindChild("Panel");
                 obj.transform.gameObject.SetActive(false);
                 fade = 0;
@@ -172,7 +167,7 @@ public class DisasterManager: MonoBehaviour {
     {
         m_type = type;
         m_state = DisasterState.eInit;
-        m_animTime = 5;
+        m_animTime = 10;
     }
 
     public void mNextStart()

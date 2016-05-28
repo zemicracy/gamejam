@@ -2,6 +2,9 @@
 using System.Collections;
 
 public class Player : MonoBehaviour {
+    [SerializeField]
+    private GameObject m_field;
+
 
     private Animator anim;
     public Vector2 speed = new Vector2(0.5f, 0.5f);
@@ -49,50 +52,74 @@ public class Player : MonoBehaviour {
             transform.rotation = new Quaternion(0, 0, 0, 0);
         }
         else if (Input.GetKey("left"))
-       {
+        {
             Position.x -= speed.x * tempo;
-            transform.rotation =new Quaternion(0,-180,0,0);
+            transform.rotation = new Quaternion(0, -180, 0, 0);
         }
-<<<<<<< HEAD
-        if (Input.GetKey("up"))
-=======
-        else if (Input.GetKey("up"))
->>>>>>> 8e25cc8b0d87b2ec7e7452a3167d088adb99f128
+
+         if (Position.y < 4.4f)
         {
-            Position.y += speed.x * tempo;
-            transform.rotation = transform.rotation;
+            if (Input.GetKey("up"))
+            {
+                Position.y += speed.x * tempo;
+                m_field.transform.position -= new Vector3(0, 0.02f, 0);
+                transform.rotation = transform.rotation;
+            }
         }
-<<<<<<< HEAD
-        if (Input.GetKey("down"))
-=======
-        else if (Input.GetKey("down"))
->>>>>>> 8e25cc8b0d87b2ec7e7452a3167d088adb99f128
+        if (Position.y > -2.8f)
         {
-            Position.y -= speed.x * tempo;
-            transform.rotation = transform.rotation;
+            if (Input.GetKey("down"))
+            {
+                Position.y -= speed.x * tempo;
+                m_field.transform.position += new Vector3(0, 0.02f, 0);
+                transform.rotation = transform.rotation;
+            }
         }
-        transform.position = Position;
-        transform.LookAt(transform.position); 
+            transform.position = Position;
+            transform.LookAt(transform.position);
+ 
     }
+
+    
 
     void Action()
     {
-<<<<<<< HEAD
-
-=======
         
     }
 
     void OnTriggerStay2D(Collider2D colider)
     {
-
-        if (colider.gameObject.tag == "kazan")
+        if (colider.gameObject.tag == "Wall")
         {
-            if (Input.GetKeyDown(KeyCode.Space))
+            Debug.Log("wall");
+        }
+
+
+        if (colider.gameObject.tag == "Volcano")
+        {
+
+            if (Input.GetKeyDown(KeyCode.A))
             {
-                Debug.Log("aaaa");
+                Debug.Log("Volcano");
             }
         }
->>>>>>> 8e25cc8b0d87b2ec7e7452a3167d088adb99f128
+
+        if (colider.gameObject.tag == "Plaza")
+        {
+            if (Input.GetKeyDown(KeyCode.A))
+            {
+                Debug.Log("Plaza");
+            }
+        }
+        if (colider.gameObject.tag == "Cave")
+        {
+            if (Input.GetKeyDown(KeyCode.A))
+            {
+                Debug.Log("Cave");
+            }
+        }
+
+
     }
 }
+

@@ -87,15 +87,16 @@ public class GameManager : MonoBehaviour {
 
     void mRun()
     {
-        if (m_state == eState.eRun) return;
+        if (m_state != eState.eRun) return;
         if (!m_isSet)
         {
             m_disasterTimeCount += Time.deltaTime;
         }
 
         //
-        if (!m_isDisasterStart && !m_isSet && m_disasterTimeCount > m_disasterTime)
+        if (!m_isDisasterStart && !m_isSet && Input.GetKeyDown(KeyCode.G))
         {
+            Debug.Log("きたああああああああああ");
             m_time = m_telopTime.mGetRandam();
 
             int randam = UnityEngine.Random.Range(0, 4);
@@ -115,7 +116,7 @@ public class GameManager : MonoBehaviour {
         //
         if (!m_isSet && m_timeCount > (m_time / 2))
         {
-            m_disaster.mNextSet(m_nextType);
+            m_disaster.mNextSet(m_nextType,10);
             m_isSet = true;
         }
 

@@ -10,9 +10,9 @@ public class TimeManager : MonoBehaviour {
 
     bool m_isStart = false;
 
-    int m_time;
+   private int m_time = 0;
 
-    public int Time
+    public int mTime
     {
         get { return m_time; }
     }
@@ -24,7 +24,7 @@ public class TimeManager : MonoBehaviour {
     }
 
     // ランダム値の取得
-    int mGetRandam()
+    public int mGetRandam()
     {
         m_time = UnityEngine.Random.Range(RandamMin, RandamMax);
         return m_time;

@@ -1,7 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class TestPlayerPrefs : MonoBehaviour
-{
-    const string HIGH_SCORE_KEY = "highScore";
+public class PlayerPref : MonoBehaviour {
+
+	// Use this for initialization
+	void Start () {
+	
+	}
+	
+	// Update is called once per frame
+	void Update () {
+	
+	}
 }

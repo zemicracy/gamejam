@@ -46,7 +46,7 @@ public class DisasterManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.E))
         {
-            mNextSet(DisasterType.eFlood,20);
+            mNextSet(DisasterType.eTyphoon,20);
         }
         if (Input.GetKeyDown(KeyCode.R))
         {

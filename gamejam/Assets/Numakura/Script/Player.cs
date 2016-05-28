@@ -49,24 +49,16 @@ public class Player : MonoBehaviour {
             transform.rotation = new Quaternion(0, 0, 0, 0);
         }
         else if (Input.GetKey("left"))
-       {
+        {
             Position.x -= speed.x * tempo;
             transform.rotation =new Quaternion(0,-180,0,0);
         }
-<<<<<<< HEAD
-        if (Input.GetKey("up"))
-=======
         else if (Input.GetKey("up"))
->>>>>>> 8e25cc8b0d87b2ec7e7452a3167d088adb99f128
         {
             Position.y += speed.x * tempo;
             transform.rotation = transform.rotation;
         }
-<<<<<<< HEAD
-        if (Input.GetKey("down"))
-=======
         else if (Input.GetKey("down"))
->>>>>>> 8e25cc8b0d87b2ec7e7452a3167d088adb99f128
         {
             Position.y -= speed.x * tempo;
             transform.rotation = transform.rotation;
@@ -77,22 +69,19 @@ public class Player : MonoBehaviour {
 
     void Action()
     {
-<<<<<<< HEAD
-
-=======
         
     }
 
     void OnTriggerStay2D(Collider2D colider)
     {
-
-        if (colider.gameObject.tag == "kazan")
+        Debug.Log("aaaa");
+        if (colider.gameObject.tag == "Volcano")
+            Debug.Log("aaaa");
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                Debug.Log("aaaa");
+                Debug.Log("aaa");
             }
         }
->>>>>>> 8e25cc8b0d87b2ec7e7452a3167d088adb99f128
     }
 }

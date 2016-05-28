@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/Yosizumi/YosizumiScene.unity
+- path: Assets/Kaneko/KanekoScene.unity
   isLoaded: 1
   isActive: 1

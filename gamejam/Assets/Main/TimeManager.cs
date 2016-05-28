@@ -24,7 +24,7 @@ public class TimeManager : MonoBehaviour {
     }
 
     // ランダム値の取得
-    int mGetRandam()
+    public int mGetRandam()
     {
         m_time = UnityEngine.Random.Range(RandamMin, RandamMax);
         return m_time;

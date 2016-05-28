@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine.UI;
 
 public class Telop : MonoBehaviour {
@@ -14,8 +15,17 @@ public class Telop : MonoBehaviour {
     [SerializeField]
     private int StringChanger;
 
-    private bool m_isEnd = false;
-
+    private bool m_isEnd = true;
+    string m_disater;
+    string m_timeCount;
+    Vector3 initPosition;
+    Dictionary<string, string> m_evacuation = new Dictionary<string, string>(){
+        { "地震", "広場" },
+        { "洪水", "丘" },
+        { "雷", "避雷針" },
+        {"台風","洞窟"},
+        {"噴火","どっか"}
+    };
     public bool IsEnd
     {
         get
@@ -23,24 +33,36 @@ public class Telop : MonoBehaviour {
             return m_isEnd;
         }
     }
-
-    public void mSetProperty(){
+    void Awake()
+    {
+        initPosition = this.GetComponent<Text>().transform.position;
+    }
+    public void mSetProperty(string disater,string timeCount){
         m_isEnd = false;
         m_flashFlg = false;
         m_telopStart = false;
+        m_stringChanger = 0;
+        m_time = 0.0f;
+        m_disater = disater;
+        m_timeCount = timeCount;
+        this.GetComponent<Text>().transform.position = initPosition;
     }
 
 	// Update is called once per frame
 	void Update () {
 
-        if (m_isEnd) return;
+        if (m_isEnd)
+        {
+            mFlashing(false);
+            return;
+        }
+
         mFlashing(m_flashFlg);
 
         if (m_telopStart)
         {
             this.GetComponent<Text>().transform.Translate(new Vector3(-0.5f, 0, 0));
 
-            Debug.Log(this.GetComponent<Text>().transform.position.x);
             if (this.GetComponent<Text>().transform.position.x < -300)
             {
                 m_isEnd = true;
@@ -58,7 +80,7 @@ public class Telop : MonoBehaviour {
             {
                 m_flashFlg = true;
                 m_telopStart = true;
-                this.GetComponent<Text>().text = "あと"+"10"+"秒後に"+"地震"+"が来ます。"+"丘の上"+"に避難してください。";
+                this.GetComponent<Text>().text = "あと"+m_timeCount+"秒後に"+m_disater+"が来ます。"+m_evacuation[m_disater]+"に避難してください。";
                 this.GetComponent<Text>().transform.Translate(new Vector3(100, 0, 0));
                 
             }

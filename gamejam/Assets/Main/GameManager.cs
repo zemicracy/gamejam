@@ -80,7 +80,7 @@ public class GameManager : MonoBehaviour {
          case DisasterManager.DisasterType.eTyphoon:
                 return "台風";
          case DisasterManager.DisasterType.eEruption:
-                return "火山";
+                return "噴火";
         }
         return "エラー";
     }
@@ -94,9 +94,8 @@ public class GameManager : MonoBehaviour {
         }
 
         //
-        if (!m_isDisasterStart && !m_isSet && Input.GetKeyDown(KeyCode.G))
+        if (!m_isDisasterStart && !m_isSet &&m_disasterTimeCount>m_disasterTime&&m_disaster.mIsEnd())
         {
-            Debug.Log("きたああああああああああ");
             m_time = m_telopTime.mGetRandam();
 
             int randam = UnityEngine.Random.Range(0, 4);

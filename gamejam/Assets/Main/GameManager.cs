@@ -23,12 +23,30 @@ public class GameManager : MonoBehaviour {
     float m_timeCount;
     float m_time;
 
-	
+    float m_disasterTimeCount = 0.0f;
+    float m_disasterTime = 0.0f;
+
+    [SerializeField]
+    int StartRangeMax;
+    [SerializeField]
+    int StartRangeMin;
+
+
+    void Awake()
+    {
+        m_disasterTime = UnityEngine.Random.Range(StartRangeMin, StartRangeMax);
+        Debug.Log(m_disasterTime);
+    }
 	// Update is called once per frame
 	void Update () {
 
+        if (!m_isSet)
+        {
+            m_disasterTimeCount += Time.deltaTime;
+        }
+
         //
-        if (!m_isDisasterStart&&!m_isSet&&Input.GetKeyDown(KeyCode.Space))
+        if (!m_isDisasterStart&&!m_isSet&&m_disasterTimeCount>m_disasterTime)
         {
             m_time = m_telopTime.mGetRandam();
 
@@ -60,7 +78,12 @@ public class GameManager : MonoBehaviour {
             m_timeCount = 0;
             m_isDisasterStart = false;
             m_isSet = false;
+            m_disasterTimeCount = 0.0f;
+            m_disasterTime = UnityEngine.Random.Range(StartRangeMin, StartRangeMax);
+
         }
+
+        
 	}
 
 

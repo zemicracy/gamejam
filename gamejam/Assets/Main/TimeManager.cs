@@ -10,9 +10,9 @@ public class TimeManager : MonoBehaviour {
 
     bool m_isStart = false;
 
-    int m_time;
+   private int m_time = 0;
 
-    public int Time
+    public int mTime
     {
         get { return m_time; }
     }

@@ -2,9 +2,12 @@
 using UnityEngine.UI;
 using System.Collections;
 
-public class DisasterManager: MonoBehaviour {
+public class DisasterManager : MonoBehaviour
+{
     [SerializeField]
     private GameObject m_field;
+    [SerializeField]
+    private GameObject m_fxLayer;
 
     public enum DisasterType
     {
@@ -19,29 +22,31 @@ public class DisasterManager: MonoBehaviour {
 
     public enum DisasterState
     {
-        eInit,ePrePlay,ePlay,eFin
+        eInit, ePrePlay, ePlay, eFin
     }
     DisasterState m_state;
     Vector3 m_stageOrigin;
+    bool m_isEnd;
+    bool m_animFlg;
 
     //test
     Text m_text;
 
     float m_animTime = 10;
 
-
     // Use this for initialization
-    void Start () {
-        m_animTime = 10;
+    void Start()
+    {
         m_type = DisasterType.eNull;
-        m_text = m_field.transform.FindChild("Text").GetComponent<Text>();
-	}
-	
-	// Update is called once per frame
-	void Update () {
+        m_isEnd = true;
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
         if (Input.GetKeyDown(KeyCode.E))
         {
-            mNextSet(DisasterType.eEarthquake);
+            mNextSet(DisasterType.eFlood,20);
         }
         if (Input.GetKeyDown(KeyCode.R))
         {
@@ -70,37 +75,27 @@ public class DisasterManager: MonoBehaviour {
     }
     void mStateInit()
     {
-        m_stageOrigin = m_field.transform.position;
-        m_state = DisasterState.ePrePlay;
-    }
-    void mStatePlay()
-    {
         switch (m_type)
         {
             case DisasterType.eThunder:
                 break;
-            case DisasterType.eFlood:                
+            case DisasterType.eFlood:
+                m_stageOrigin = m_fxLayer.transform.FindChild("Flood").FindChild("Water").transform.position;
                 break;
             case DisasterType.eEarthquake:
-                float rad = Random.Range(0,360);
-                m_field.transform.position = new Vector3(Mathf.Sin(rad * 180 / Mathf.PI) * m_animTime, Mathf.Cos(rad * 180 / Mathf.PI) * m_animTime, 0)
-                    + m_stageOrigin;
+                m_stageOrigin = m_field.transform.position;
                 break;
             case DisasterType.eEruption:
+                break;
+            case DisasterType.eTyphoon:
+                m_stageOrigin = m_fxLayer.transform.FindChild("Typhoon").FindChild("tornado").transform.position;
                 break;
             case DisasterType.eNull:
                 break;
             default:
                 break;
         }
-        if(m_animTime < 0)
-        {
-            m_state = DisasterState.eFin;
-        }
-        else {
-            m_animTime -= Time.deltaTime * Time.timeScale;
-        }
-        Debug.Log(m_animTime);
+        m_state = DisasterState.ePrePlay;
     }
     float fade = 0;
     void mStatePrePlay()
@@ -108,26 +103,67 @@ public class DisasterManager: MonoBehaviour {
         switch (m_type)
         {
             case DisasterType.eThunder:
-                var obj = m_field.transform.FindChild("Panel");
-                obj.transform.gameObject.SetActive(true);
-                var color = obj.GetComponent<Image>().color;
-                obj.GetComponent<Image>().color = new Color(color.r, color.g, color.b,fade);
-                if (fade >= 0.5)
                 {
-                    fade = 0.5f;
-                }else
-                {
-                    fade += Time.deltaTime * Time.timeScale;
+                    var obj = m_fxLayer.transform.FindChild("Thunder").FindChild("onScreen");
+                    obj.transform.gameObject.SetActive(true);
+                    var color = obj.GetComponent<SpriteRenderer>().color;
+                    obj.GetComponent<SpriteRenderer>().color = new Color(color.r, color.g, color.b, fade);
+                    if (fade >= 0.5)
+                    {
+                        fade = 0.5f;
+                    }
+                    else
+                    {
+                        fade += Time.deltaTime * Time.timeScale;
+                    }
                 }
                 break;
             case DisasterType.eFlood:
+                {
+                    var obj = m_fxLayer.transform.FindChild("Flood").FindChild("flood");
+                    obj.gameObject.SetActive(true);
+                    obj.transform.GetComponent<ParticleSystem>().Play();
+
+                }
                 break;
             case DisasterType.eEarthquake:
                 float rad = Random.Range(0, 360);
-                m_field.transform.position = new Vector3(Mathf.Sin(rad * 180 / Mathf.PI), Mathf.Cos(rad * 180 / Mathf.PI), 0)
+                m_field.transform.position = new Vector3(Mathf.Sin(rad * 180 / Mathf.PI)*0.2f, Mathf.Cos(rad * 180 / Mathf.PI) * 0.2f, 0)
                     + m_stageOrigin;
                 break;
             case DisasterType.eEruption:
+                {
+                    var obj = m_fxLayer.transform.FindChild("Eruption").FindChild("onScreen");
+                    obj.transform.gameObject.SetActive(true);
+                    var color = obj.GetComponent<SpriteRenderer>().color;
+                    obj.GetComponent<SpriteRenderer>().color = new Color(color.r, color.g, color.b, fade);
+                    if (fade >= 0.5)
+                    {
+                        fade = 0.5f;
+                    }
+                    else
+                    {
+                        fade += Time.deltaTime * Time.timeScale;
+                    }
+                }
+                break;
+            case DisasterType.eTyphoon:
+                {
+                    var obj = m_fxLayer.transform.FindChild("Typhoon");
+                    obj.FindChild("onScreen").gameObject.SetActive(true);
+                    var color = obj.FindChild("onScreen").GetComponent<SpriteRenderer>().color;
+                    obj.FindChild("onScreen").GetComponent<SpriteRenderer>().color = new Color(color.r, color.g, color.b, fade);
+                    if (fade >= 0.5)
+                    {
+                        fade = 0.5f;
+                    }
+                    else
+                    {
+                        fade += Time.deltaTime * Time.timeScale;
+                    }
+                    obj.FindChild("rain").transform.gameObject.SetActive(true);
+                    obj.FindChild("rain").GetComponent<ParticleSystem>().Play();
+                }
                 break;
             case DisasterType.eNull:
                 break;
@@ -137,37 +173,175 @@ public class DisasterManager: MonoBehaviour {
 
     }
 
+    void mStatePlay()
+    {
+        switch (m_type)
+        {
+            case DisasterType.eThunder:
+                {
+                    var obj = m_fxLayer.transform.FindChild("Thunder").FindChild("thunder");
+                    obj.gameObject.SetActive(true);
+
+                    Debug.Log(m_field.transform.parent.FindChild("Player").transform.position);
+                    obj.position = m_field.transform.parent.FindChild("Player").transform.position;
+                    obj.Translate(new Vector3(0, 30, 0));
+                }
+                break;
+            case DisasterType.eFlood:
+                {
+                    var obj = m_fxLayer.transform.FindChild("Flood").FindChild("Water");
+                    obj.transform.gameObject.SetActive(true);
+                    float faze = -1;
+                    if (obj.transform.position.x < 0 && !m_animFlg)
+                    {
+                        m_animFlg = true;
+                    }
+                    if (m_animFlg)
+                    {
+                        faze = 1;
+                    }
+                    obj.transform.Translate(new Vector3(4 * Time.deltaTime * faze, 0, 0));
+                    Debug.Log(obj.transform.position.x + "    " + (-m_stageOrigin.x));
+                    if (obj.transform.position.x > m_stageOrigin.x)
+                    {
+                        m_animTime = -1;
+                    }
+                }
+                break;
+            case DisasterType.eEarthquake:
+                float rad = Random.Range(0, 360);
+                float power = m_animTime / 2 < 1.0f ? m_animTime / 10: 1;
+                m_field.transform.position = new Vector3(Mathf.Sin(rad * 180 / Mathf.PI) * 2 * power, Mathf.Cos(rad * 180 / Mathf.PI) * 2 * power, 0)
+                    + m_stageOrigin;
+
+                break;
+            case DisasterType.eEruption:
+                {
+                    var obj = m_fxLayer.transform.FindChild("Eruption").FindChild("volcano");
+                    obj.transform.gameObject.SetActive(true);
+                    var particleSystem = obj.GetComponent<ParticleSystem>();
+                    if (!particleSystem.isStopped && !particleSystem.isPlaying)
+                    {
+                        obj.GetComponent<ParticleSystem>().Play();
+                    }
+                    else if(particleSystem.isStopped)
+                    {
+                        m_animTime = 0;
+                    }
+                }
+                break;
+            case DisasterType.eTyphoon:
+                {
+                    var obj = m_fxLayer.transform.FindChild("Typhoon").FindChild("tornado");
+                    obj.transform.gameObject.SetActive(true);
+                    obj.GetComponent<ParticleSystem>().Play();
+                    obj.transform.Translate(new Vector3(-4 * Time.deltaTime, 0, 0));
+                    Debug.Log(obj.transform.position.x + "    " + (-m_stageOrigin.x));
+                    if(obj.transform.position.x < -m_stageOrigin.x)
+                    {
+                        m_animTime = -1;
+                    }
+                }
+                break;
+
+            case DisasterType.eNull:
+                break;
+            default:
+                break;
+        }
+        if (m_animTime < 0)
+        {
+            m_state = DisasterState.eFin;
+        }
+        else
+        {
+            m_animTime -= Time.deltaTime * Time.timeScale;
+        }
+    }
     void mStateFinalize()
     {
         switch (m_type)
         {
             case DisasterType.eThunder:
-                var obj = m_field.transform.FindChild("Panel");
-                obj.transform.gameObject.SetActive(false);
-                fade = 0;
+                {
+                    var obj = m_fxLayer.transform.FindChild("Thunder").FindChild("onScreen");
+                    obj.transform.gameObject.SetActive(false);
+                    m_fxLayer.transform.FindChild("Thunder").FindChild("thunder").transform.gameObject.SetActive(false);
+                    fade = 0;
+                    m_type = DisasterType.eNull;
+                    m_state = DisasterState.eFin;
+                    m_isEnd = true;
+                }
                 break;
             case DisasterType.eFlood:
+                {
+                    var obj = m_fxLayer.transform.FindChild("Flood");
+                    obj.FindChild("flood").gameObject.SetActive(false);
+                    obj.FindChild("Water").gameObject.SetActive(false);
+
+                    m_type = DisasterType.eNull;
+                    m_state = DisasterState.eFin;
+                    m_isEnd = true;
+                }
                 break;
             case DisasterType.eEarthquake:
+                m_field.transform.position = m_stageOrigin;
+                m_type = DisasterType.eNull;
+                m_state = DisasterState.eFin;
+                m_isEnd = true;
                 break;
             case DisasterType.eEruption:
+                {
+                    var obj = m_fxLayer.transform.FindChild("Eruption").FindChild("onScreen");
+                    obj.transform.gameObject.SetActive(false);
+                    m_fxLayer.transform.FindChild("Thunder").FindChild("volcano").transform.gameObject.SetActive(false);
+                    fade = 0;
+                    m_type = DisasterType.eNull;
+                    m_state = DisasterState.eFin;
+                    m_isEnd = true;
+                }
                 break;
+            case DisasterType.eTyphoon:
+                {
+                    var obj = m_fxLayer.transform.FindChild("Typhoon");
+                    obj.FindChild("rain").gameObject.SetActive(false);
+                    obj.FindChild("tornado").gameObject.SetActive(false);
+                    obj.FindChild("tornado").transform.position = m_stageOrigin;
+                    var color = obj.FindChild("onScreen").GetComponent<SpriteRenderer>().color;
+                    obj.FindChild("onScreen").GetComponent<SpriteRenderer>().color = new Color(color.r, color.g, color.b, fade);
+                    if (fade <= 0)
+                    {
+                        fade = 0.0f;
+                        obj.FindChild("onScreen").gameObject.SetActive(false);
+                        m_type = DisasterType.eNull;
+                        m_state = DisasterState.eFin;
+                        m_isEnd = true;
+
+                    }
+                    else
+                    {
+                        fade -= Time.deltaTime * Time.timeScale;
+                    }
+
+
+                }
+                break;
+
             case DisasterType.eNull:
                 break;
             default:
                 break;
         }
-        m_field.transform.position = m_stageOrigin;
-        m_type = DisasterType.eNull;
-        m_state = DisasterState.eFin;
     }
 
 
-    public void mNextSet(DisasterType type)
+    public void mNextSet(DisasterType type,float animateTime)
     {
+        if (!m_isEnd) return;
         m_type = type;
         m_state = DisasterState.eInit;
-        m_animTime = 10;
+        m_animTime = animateTime;
+        m_isEnd = false;
     }
 
     public void mNextStart()
@@ -175,8 +349,13 @@ public class DisasterManager: MonoBehaviour {
         m_state = DisasterState.ePlay;
     }
 
-    
+    public bool mIsEnd()
+    {
+        return m_isEnd;
+    }
 
-    
+
+
+
 
 }

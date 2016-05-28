@@ -8,6 +8,8 @@ public class DisasterManager : MonoBehaviour
     private GameObject m_field;
     [SerializeField]
     private GameObject m_fxLayer;
+    [SerializeField]
+    private GameObject m_player;
 
     public enum DisasterType
     {
@@ -182,8 +184,7 @@ public class DisasterManager : MonoBehaviour
                     var obj = m_fxLayer.transform.FindChild("Thunder").FindChild("thunder");
                     obj.gameObject.SetActive(true);
 
-                    Debug.Log(m_field.transform.parent.FindChild("Player").transform.position);
-                    obj.position = m_field.transform.parent.FindChild("Player").transform.position;
+                    obj.position = m_player.transform.position;
                     obj.Translate(new Vector3(0, 30, 0));
                 }
                 break;

@@ -9,6 +9,9 @@ public class GameManager : MonoBehaviour {
     Telop m_telop;
     [SerializeField]
     DisasterManager m_disaster;
+    [SerializeField]
+    Score m_score;
+
     bool m_isDisasterStart = false;
     bool m_isSet = false;
     Dictionary<int, DisasterManager.DisasterType> m_disasterTypeHash = new Dictionary<int, DisasterManager.DisasterType>(){
@@ -31,59 +34,31 @@ public class GameManager : MonoBehaviour {
     [SerializeField]
     int StartRangeMin;
 
+    enum eState
+    {
+        eNull,
+        eRun,
+        eEnd
+    }
 
+    eState m_state;
     void Awake()
     {
         m_disasterTime = UnityEngine.Random.Range(StartRangeMin, StartRangeMax);
-        Debug.Log(m_disasterTime);
+        m_state = eState.eRun;
     }
 	// Update is called once per frame
 	void Update () {
-
-        if (!m_isSet)
+        // プレイヤー死んだら
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
-            m_disasterTimeCount += Time.deltaTime;
+            // 終了
+            m_state = eState.eEnd;
         }
+        mRun();
 
-        //
-        if (!m_isDisasterStart&&!m_isSet&&m_disasterTimeCount>m_disasterTime)
-        {
-            m_time = m_telopTime.mGetRandam();
-
-            int randam = UnityEngine.Random.Range(0, 4);
-
-            m_nextType = mGetDisaster(0);
-
-            m_telop.mSetProperty(mGetDisaterTypeToString(m_nextType), m_time.ToString());
-            m_isDisasterStart = true;
-        }
-
-        //
-        if (m_telop.IsEnd && m_isDisasterStart)
-        {
-            m_timeCount += Time.deltaTime;   
-        }
-
-        //
-        if (!m_isSet&&m_timeCount > (m_time / 2))
-        {
-            m_disaster.mNextSet(m_nextType);
-            m_isSet = true;
-        }
-
-        //
-        if (m_isDisasterStart && m_timeCount > m_time)
-        {
-            m_disaster.mNextStart();
-            m_timeCount = 0;
-            m_isDisasterStart = false;
-            m_isSet = false;
-            m_disasterTimeCount = 0.0f;
-            m_disasterTime = UnityEngine.Random.Range(StartRangeMin, StartRangeMax);
-
-        }
-
-        
+        mEnd();
+       
 	}
 
 
@@ -108,5 +83,60 @@ public class GameManager : MonoBehaviour {
                 return "火山";
         }
         return "エラー";
+    }
+
+    void mRun()
+    {
+        if (m_state == eState.eRun) return;
+        if (!m_isSet)
+        {
+            m_disasterTimeCount += Time.deltaTime;
+        }
+
+        //
+        if (!m_isDisasterStart && !m_isSet && m_disasterTimeCount > m_disasterTime)
+        {
+            m_time = m_telopTime.mGetRandam();
+
+            int randam = UnityEngine.Random.Range(0, 4);
+
+            m_nextType = mGetDisaster(0);
+
+            m_telop.mSetProperty(mGetDisaterTypeToString(m_nextType), m_time.ToString());
+            m_isDisasterStart = true;
+        }
+
+        //
+        if (m_telop.IsEnd && m_isDisasterStart)
+        {
+            m_timeCount += Time.deltaTime;
+        }
+
+        //
+        if (!m_isSet && m_timeCount > (m_time / 2))
+        {
+            m_disaster.mNextSet(m_nextType);
+            m_isSet = true;
+        }
+
+        //
+        if (m_isDisasterStart && m_timeCount > m_time)
+        {
+            m_disaster.mNextStart();
+            m_timeCount = 0;
+            m_isDisasterStart = false;
+            m_isSet = false;
+            m_disasterTimeCount = 0.0f;
+            m_disasterTime = UnityEngine.Random.Range(StartRangeMin, StartRangeMax);
+
+        }
+    }
+    /*
+     終了処理
+     * ランキングの保存とかはここでやろうか
+     */
+    void mEnd()
+    {
+
     }
 }

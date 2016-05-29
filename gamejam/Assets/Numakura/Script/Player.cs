@@ -9,18 +9,19 @@ public class Player : MonoBehaviour {
     private Animator anim;
     public Vector2 speed = new Vector2(0.5f, 0.5f);
 
+    private int Player_life =1;
 
     float tempo = 0.1f;
 	// Use this for initialization
 	void Start () {
         anim = GetComponent<Animator>();
+        Player_life = 1;
 	}
 	
 	// Update is called once per frame
 	void Update () {
         Move(tempo);
-        Action();
-
+        
         if (Input.GetKey("left"))
         {
             anim.SetBool("Walk", true);
@@ -40,6 +41,17 @@ public class Player : MonoBehaviour {
         {
             anim.SetBool("Walk", false);
         }
+
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            Player_life -= 1;
+        }
+
+        if (Player_life == 0)
+        {
+            Application.LoadLevel("GameOver");
+        }
+
 	}
 
     void Move(float tempo)
@@ -80,20 +92,12 @@ public class Player : MonoBehaviour {
  
     }
 
-    
-
-    void Action()
-    {
-        
-    }
-
     void OnTriggerStay2D(Collider2D colider)
     {
         if (colider.gameObject.tag == "Wall")
         {
             Debug.Log("wall");
         }
-
 
         if (colider.gameObject.tag == "Volcano")
         {

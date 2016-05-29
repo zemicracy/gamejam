@@ -42,7 +42,6 @@ public class ItemManager : MonoBehaviour {
 
             instance.transform.position = new Vector3(x, y, 0);
 
-            this.transform.parent = GameObject.Find("Apple(Clone)").transform;
         }
     }
 }

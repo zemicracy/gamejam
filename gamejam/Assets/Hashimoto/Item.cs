@@ -16,9 +16,14 @@ public class Item : MonoBehaviour {
     {
         this.transform.parent = GameObject.Find("ItemManager").transform;
     }
+
     void OnTriggerEnter2D(Collider2D colision)
     {
-        Debug.Log("ゲット");
-        Destroy(this.gameObject);
+
+        if (colision.gameObject.tag == "chara")
+        {
+            Destroy(this.gameObject);
+        }
+        
     }
 }

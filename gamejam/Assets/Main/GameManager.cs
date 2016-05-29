@@ -22,6 +22,13 @@ public class GameManager : MonoBehaviour {
          {4,DisasterManager.DisasterType.eTyphoon},
     };
 
+    Dictionary<DisasterManager.DisasterType,int> m_disasterTimeHash = new Dictionary<DisasterManager.DisasterType,int>(){
+        {DisasterManager.DisasterType.eEarthquake,5},
+         {DisasterManager.DisasterType.eEruption,5},
+          {DisasterManager.DisasterType.eFlood,15},
+         {DisasterManager.DisasterType.eThunder,5},
+         {DisasterManager.DisasterType.eTyphoon,10},
+    };
     DisasterManager.DisasterType m_nextType;
     float m_timeCount;
     float m_time;
@@ -47,6 +54,7 @@ public class GameManager : MonoBehaviour {
         m_disasterTime = UnityEngine.Random.Range(StartRangeMin, StartRangeMax);
         m_state = eState.eRun;
     }
+
 	// Update is called once per frame
 	void Update () {
         
@@ -111,7 +119,7 @@ public class GameManager : MonoBehaviour {
         //
         if (!m_isSet && m_timeCount > (m_time / 2))
         {
-            m_disaster.mNextSet(m_nextType,10);
+            m_disaster.mNextSet(m_nextType, m_disasterTimeHash[m_nextType]);
             m_isSet = true;
         }
 

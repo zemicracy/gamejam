@@ -19,11 +19,9 @@ public class Item : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D colision)
     {
+        var _score = GameObject.Find("Score").transform.FindChild("Text").GetComponent<Score>();
+        _score.AddScore(20);
 
-        if (colision.gameObject.tag == "chara")
-        {
-            Destroy(this.gameObject);
-        }
-        
+        Destroy(this.gameObject);
     }
 }

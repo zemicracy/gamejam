@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: 15eb62b8c0b6c406abbfc0df4beffd81
 TextureImporter:
-  fileIDToRecycleName: {}
+  fileIDToRecycleName:
+    21300000: uni_0
+    21300002: uni_1
+    21300004: uni_2
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -58,7 +61,14 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
+      outline:
+      - - {x: -6, y: 16}
+        - {x: -16, y: 10}
+        - {x: -16, y: -14}
+        - {x: -12, y: -16}
+        - {x: 16, y: -16}
+        - {x: 16, y: 13}
+        - {x: 8, y: 16}
     - name: uni_1
       rect:
         serializedVersion: 2
@@ -69,7 +79,15 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
+      outline:
+      - - {x: -7, y: 15}
+        - {x: -15, y: 7}
+        - {x: -15, y: -7}
+        - {x: -5, y: -15}
+        - {x: 15, y: -15}
+        - {x: 16, y: -14}
+        - {x: 16, y: 5}
+        - {x: 11, y: 15}
     - name: uni_2
       rect:
         serializedVersion: 2
@@ -80,7 +98,11 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
+      outline:
+      - - {x: -16, y: 16}
+        - {x: -16, y: -16}
+        - {x: 16, y: -16}
+        - {x: 16, y: 16}
     outline: []
   spritePackingTag: 
   userData: 

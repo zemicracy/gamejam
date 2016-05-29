@@ -30,6 +30,7 @@ public class Player : MonoBehaviour
 
         if (Check())
         {
+            Debug.Log("dead" + m_nowStay);
             m_deadTime += Time.deltaTime;
             anim.SetBool("DieFlag", true);
             if (m_deadTime > 5)
@@ -49,7 +50,8 @@ public class Player : MonoBehaviour
         {
             m_stayTime += Time.deltaTime;
             anim.SetBool("Wait", true);
-            if (m_disaster.mIsPlay() || Input.GetKeyDown(KeyCode.Escape))
+
+            if (m_disaster.mIsEnd() || Input.GetKeyDown(KeyCode.Escape))
             {
                 anim.SetBool("Wait", false);
                 m_nowStay = "null";
@@ -123,9 +125,9 @@ public class Player : MonoBehaviour
 
     void OnTriggerStay2D(Collider2D colider)
     {
-
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKey(KeyCode.Space))
         {
+            Debug.Log(colider.gameObject.tag);
             if (colider.gameObject.tag == "Volcano")
             {
                 m_nowStay = "Volcano";
@@ -137,7 +139,6 @@ public class Player : MonoBehaviour
             }
             if (colider.gameObject.tag == "Cave")
             {
-                Debug.Log("洞窟");
                 m_nowStay = "Cave";
             }
             if (colider.gameObject.tag == "Upland")

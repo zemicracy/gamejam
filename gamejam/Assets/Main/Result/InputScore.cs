@@ -14,7 +14,6 @@ public class InputScore : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         time += Time.deltaTime;
-        Debug.Log(time);
         if (time > 3)
         {
                 Input();
@@ -24,7 +23,6 @@ public class InputScore : MonoBehaviour {
     void Input()
     {
             int score = PlayerPrefs.GetInt("highScore");
-            Debug.Log(score);
             transform.FindChild("Score").GetComponent<Text>().text = text[0] + score.ToString();
             //string reason = PlayerPrefs.GetInt("highScore");
             //transform.FindChild("reason").GetComponent<Text>().text = text[1] + reason;

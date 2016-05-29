@@ -13,9 +13,14 @@ public class Score : MonoBehaviour {
 
     readonly string[] High_Score_Key = { "highScore", "highScore1" };
 
-   // const string High_Score_Key = "highscore";
+    public void AddScore(int a)
+    {
+        score += a;
+    }
 
-	// Use this for initialization
+    // const string High_Score_Key = "highscore";
+
+    // Use this for initialization
     void Start()
     {
         scoreText.text = "Score:0";
@@ -44,8 +49,8 @@ public class Score : MonoBehaviour {
         {
             timeleft = 0.0f;
             score += 10;
-            scoreText.text = "Score:" + score.ToString();
         }
+            scoreText.text = "Score:" + score.ToString();
 	}
 
    void  Paint(){

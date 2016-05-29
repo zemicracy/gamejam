@@ -88,21 +88,22 @@ public class GameManager : MonoBehaviour {
     void mRun()
     {
         if (m_state != eState.eRun) return;
-        if (!m_isSet)
+        if (!m_isSet && m_disaster.mIsEnd())
         {
             m_disasterTimeCount += Time.deltaTime;
         }
 
         //
-        if (!m_isDisasterStart && !m_isSet &&m_disasterTimeCount>m_disasterTime&&m_disaster.mIsEnd())
+        if (!m_isDisasterStart && !m_isSet && m_disasterTimeCount > m_disasterTime && m_disaster.mIsEnd())
         {
             m_time = m_telopTime.mGetRandam();
 
             int randam = UnityEngine.Random.Range(0, 4);
 
-            m_nextType = mGetDisaster(0);
+            m_nextType = mGetDisaster(randam);
 
             m_telop.mSetProperty(mGetDisaterTypeToString(m_nextType), m_time.ToString());
+            m_telop.mAccident();
             m_isDisasterStart = true;
         }
 
@@ -120,7 +121,7 @@ public class GameManager : MonoBehaviour {
         }
 
         //
-        if (m_isDisasterStart && m_timeCount > m_time)
+        if (m_isDisasterStart && m_timeCount > m_time )
         {
             m_disaster.mNextStart();
             m_timeCount = 0;

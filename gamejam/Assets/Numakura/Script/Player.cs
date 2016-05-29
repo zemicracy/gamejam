@@ -31,7 +31,7 @@ public class Player : MonoBehaviour
         if (Check())
         {
             m_deadTime += Time.deltaTime;
-            anim.SetBool("Walk", true);
+            anim.SetBool("DieFlag", true);
             if (m_deadTime > 5)
             {
                 Player_life = 0;
@@ -44,7 +44,6 @@ public class Player : MonoBehaviour
             }
             return;
         }
-
 
         if (m_nowStay != "null")
         {

@@ -30,6 +30,7 @@ public class DisasterManager : MonoBehaviour
     Vector3 m_stageOrigin;
     bool m_isEnd;
     bool m_animFlg;
+    bool m_isPlayed;
 
     //test
     Text m_text;
@@ -41,6 +42,7 @@ public class DisasterManager : MonoBehaviour
     {
         m_type = DisasterType.eNull;
         m_isEnd = true;
+        m_isPlayed = false;
     }
 
     // Update is called once per frame
@@ -177,6 +179,7 @@ public class DisasterManager : MonoBehaviour
 
     void mStatePlay()
     {
+        m_isPlayed = true;
         switch (m_type)
         {
             case DisasterType.eThunder:
@@ -331,6 +334,8 @@ public class DisasterManager : MonoBehaviour
             default:
                 break;
         }
+        m_isPlayed = false;
+
     }
 
 
@@ -356,6 +361,11 @@ public class DisasterManager : MonoBehaviour
     public DisasterType mGetType()
     {
         return m_type;
+    }
+
+    public bool mIsPlay()
+    {
+        return m_isPlayed;
     }
 
 

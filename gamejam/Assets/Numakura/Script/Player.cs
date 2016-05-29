@@ -46,6 +46,11 @@ public class Player : MonoBehaviour {
             anim.SetBool("Walk", false);
         }
 
+        switch (m_type)
+        {
+           
+        }
+
 
         if (Player_life == 0)
         {
@@ -103,7 +108,6 @@ public class Player : MonoBehaviour {
 
         if (colider.gameObject.tag == "Volcano")
         {
-
             if (Input.GetKeyDown(KeyCode.A))
             {
                 gameObject.tag = "Volcano";

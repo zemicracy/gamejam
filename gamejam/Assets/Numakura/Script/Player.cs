@@ -6,16 +6,16 @@ public class Player : MonoBehaviour {
     private GameObject m_field;
 
     [SerializeField]
-    private GameObject m_disaster;
-
-    private DisasterManager.DisasterType m_type;
-
+    private DisasterManager m_disaster;
     private Animator anim;
     public Vector2 speed = new Vector2(0.5f, 0.5f);
 
+    private string m_nowStay = "null";
+    private float m_stayTime = 0.0f;
     private int Player_life =1;
-
+    float m_deadTime = 0.0f;
     float tempo = 0.1f;
+
 	// Use this for initialization
 	void Start () {
         anim = GetComponent<Animator>();
@@ -24,8 +24,40 @@ public class Player : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+
+        if (Check())
+        {
+            m_deadTime += Time.deltaTime;
+            anim.SetBool("Walk", true);
+            if (m_deadTime > 5)
+            {
+                Player_life = 0;
+            }
+
+            if (Player_life == 0)
+            {
+                DeadRoot();
+                Application.LoadLevel("GameOver");
+            }
+            return;
+        }
+       
+
+        if (m_nowStay != "null")
+        {
+            m_stayTime += Time.deltaTime;
+            anim.SetBool("Wait", true);
+            if (m_disaster.mIsPlay() || Input.GetKeyDown(KeyCode.Escape))
+            {
+                anim.SetBool("Wait", false);
+                m_nowStay = "null";
+                m_stayTime = 0.0f;
+            }
+            return;
+        }
+
         Move(tempo);
-        
+
         if (Input.GetKey("left"))
         {
             anim.SetBool("Walk", true);
@@ -44,12 +76,6 @@ public class Player : MonoBehaviour {
         else
         {
             anim.SetBool("Walk", false);
-        }
-
-
-        if (Player_life == 0)
-        {
-            Application.LoadLevel("GameOver");
         }
 
 	}
@@ -94,54 +120,109 @@ public class Player : MonoBehaviour {
 
     void OnTriggerStay2D(Collider2D colider)
     {
-        m_type= m_disaster.GetComponent<DisasterManager>().mGetType();
-
-        if (colider.gameObject.tag == "Wall")
+        
+        if (Input.GetKeyDown(KeyCode.Space))
         {
-            Debug.Log("wall");
-        }
-
-        if (colider.gameObject.tag == "Volcano")
-        {
-
-            if (Input.GetKeyDown(KeyCode.A))
+            if (colider.gameObject.tag == "Volcano")
             {
-                gameObject.tag = "Volcano";
-                Debug.Log(gameObject.tag);
+                m_nowStay = "Volcano";
+            }
+
+            if (colider.gameObject.tag == "Plaza")
+            {
+                m_nowStay = "Plaza";
+            }
+            if (colider.gameObject.tag == "Cave")
+            {
+                Debug.Log("洞窟");
+                m_nowStay = "Cave";
+            }
+            if (colider.gameObject.tag == "Upland")
+            {
+                m_nowStay = "Upland";
+            }
+            if (colider.gameObject.tag == "LightningRod")
+            {
+                m_nowStay = "LightningRod";
+            }
+
+        }
+    }
+
+    bool Check()
+    {
+        // とりあえず判定
+        var type = m_disaster.GetComponent<DisasterManager>().mGetType();
+        if (m_disaster.mIsPlay())
+        {
+            switch (type)
+            {
+                case DisasterManager.DisasterType.eEarthquake:
+                    if (m_nowStay != "Plaza")
+                    {
+                        return true;
+                    }
+                    break;
+
+                case DisasterManager.DisasterType.eEruption:
+                    if (m_nowStay != "Cave")
+                    {
+                        return true;
+                    }
+                    break;
+                case DisasterManager.DisasterType.eFlood:
+                    if (m_nowStay != "Upland")
+                    {
+                        return true;
+                    }
+                    break;
+                case DisasterManager.DisasterType.eThunder:
+                    if (m_nowStay != "LightningRod")
+                    {
+                        return true;
+                    }
+
+                    break;
+                case DisasterManager.DisasterType.eTyphoon:
+                    if (m_nowStay != "Cave")
+                    {
+                        return true;
+                    }
+                    break;
             }
         }
 
-        if (colider.gameObject.tag == "Plaza")
+        return false;
+    }
+
+    void DeadRoot()
+    {
+        if (m_nowStay == "Volcano")
         {
-            if (Input.GetKeyDown(KeyCode.A))
-            {
-                Debug.Log("Plaza");
-            }
-        }
-        if (colider.gameObject.tag == "Cave")
-        {
-            if (Input.GetKeyDown(KeyCode.A))
-            {
-                Debug.Log("Cave");
-            }
-        }
-        if (colider.gameObject.tag == "Upland")
-        {
-            if (Input.GetKeyDown(KeyCode.A))
-            {
-                Debug.Log("Upland");
-            }
-        }
-        if (colider.gameObject.tag == "LightningRod")
-        {
-            if (Input.GetKeyDown(KeyCode.A))
-            {
-                Debug.Log("LightRod");
-            }
+            PlayerPrefs.SetString(m_nowStay,"噴火から逃げ遅れた");
+            
         }
 
-
-
+        if (m_nowStay == "Plaza")
+        {
+            PlayerPrefs.SetString(m_nowStay, "地震強かった");
+            
+        }
+        if (m_nowStay == "Cave")
+        {
+            PlayerPrefs.SetString(m_nowStay, "噴火から逃げ遅れた");
+            
+        }
+        if (m_nowStay == "Upland")
+        {
+            PlayerPrefs.SetString(m_nowStay, "洪水から逃げ遅れた");
+            
+        }
+        if (m_nowStay == "LightningRod")
+        {
+            PlayerPrefs.SetString(m_nowStay, "雷直撃");
+            
+        }
 
     }
 }

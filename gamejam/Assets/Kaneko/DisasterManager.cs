@@ -30,6 +30,7 @@ public class DisasterManager : MonoBehaviour
     Vector3 m_stageOrigin;
     bool m_isEnd;
     bool m_animFlg;
+    bool m_isPlayed;
 
     //test
     Text m_text;
@@ -41,6 +42,7 @@ public class DisasterManager : MonoBehaviour
     {
         m_type = DisasterType.eNull;
         m_isEnd = true;
+        m_isPlayed = false;
     }
 
     // Update is called once per frame
@@ -48,7 +50,7 @@ public class DisasterManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.E))
         {
-            mNextSet(DisasterType.eTyphoon,20);
+            mNextSet(DisasterType.eFlood,20);
         }
         if (Input.GetKeyDown(KeyCode.R))
         {
@@ -177,6 +179,7 @@ public class DisasterManager : MonoBehaviour
 
     void mStatePlay()
     {
+        m_isPlayed = true;
         switch (m_type)
         {
             case DisasterType.eThunder:
@@ -193,7 +196,7 @@ public class DisasterManager : MonoBehaviour
                     var obj = m_fxLayer.transform.FindChild("Flood").FindChild("Water");
                     obj.transform.gameObject.SetActive(true);
                     float faze = -1;
-                    if (obj.transform.position.x < 0 && !m_animFlg)
+                    if (obj.transform.position.x < 5 && !m_animFlg)
                     {
                         m_animFlg = true;
                     }
@@ -227,7 +230,7 @@ public class DisasterManager : MonoBehaviour
                     }
                     else if(particleSystem.isStopped)
                     {
-                        m_animTime = 0;
+                        m_animTime = -1;
                     }
                 }
                 break;
@@ -323,8 +326,6 @@ public class DisasterManager : MonoBehaviour
                     {
                         fade -= Time.deltaTime * Time.timeScale;
                     }
-
-
                 }
                 break;
 
@@ -333,6 +334,8 @@ public class DisasterManager : MonoBehaviour
             default:
                 break;
         }
+        m_isPlayed = false;
+
     }
 
 
@@ -358,6 +361,11 @@ public class DisasterManager : MonoBehaviour
     public DisasterType mGetType()
     {
         return m_type;
+    }
+
+    public bool mIsPlay()
+    {
+        return m_isPlayed;
     }
 
 

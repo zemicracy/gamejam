@@ -12,6 +12,10 @@ public class Item : MonoBehaviour {
 
     [SerializeField]
     Score score;
+    void Awake()
+    {
+        this.transform.parent = GameObject.Find("ItemManager").transform;
+    }
     void OnTriggerEnter2D(Collider2D colision)
     {
         Debug.Log("ゲット");

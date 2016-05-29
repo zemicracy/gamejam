@@ -41,6 +41,8 @@ public class ItemManager : MonoBehaviour {
             float x = UnityEngine.Random.Range(RangeMinX, RangeMaxX);
 
             instance.transform.position = new Vector3(x, y, 0);
+
+            this.transform.parent = GameObject.Find("Apple(Clone)").transform;
         }
     }
 }

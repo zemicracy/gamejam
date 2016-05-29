@@ -46,6 +46,12 @@ public class Player : MonoBehaviour {
             anim.SetBool("Walk", false);
         }
 
+        switch (m_type)
+        {
+           
+        }
+
+
         if (Player_life == 0)
         {
             Application.LoadLevel("GameOver");

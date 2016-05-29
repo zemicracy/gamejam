@@ -11,14 +11,6 @@ public class DisasterManager : MonoBehaviour
     [SerializeField]
     private GameObject m_player;
 
-    public AudioClip audioClip1;
-    public AudioClip audioClip2;
-    public AudioClip audioClip3;
-    public AudioClip audioClip4;
-    public AudioClip audioClip5;
-    private AudioSource audioSource;
-
-
     public enum DisasterType
     {
         eThunder,   //雷
@@ -48,7 +40,6 @@ public class DisasterManager : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        audioSource = gameObject.GetComponent<AudioSource>();
         m_type = DisasterType.eNull;
         m_isEnd = true;
         m_isPlayed = false;
@@ -59,7 +50,7 @@ public class DisasterManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.E))
         {
-            mNextSet(DisasterType.eTyphoon,20);
+            mNextSet(DisasterType.eFlood,20);
         }
         if (Input.GetKeyDown(KeyCode.R))
         {
@@ -117,9 +108,6 @@ public class DisasterManager : MonoBehaviour
         {
             case DisasterType.eThunder:
                 {
-                    audioSource.clip = audioClip1;
-                    audioSource.Play();
-
                     var obj = m_fxLayer.transform.FindChild("Thunder").FindChild("onScreen");
                     obj.transform.gameObject.SetActive(true);
                     var color = obj.GetComponent<SpriteRenderer>().color;
@@ -136,26 +124,19 @@ public class DisasterManager : MonoBehaviour
                 break;
             case DisasterType.eFlood:
                 {
-                    audioSource.clip = audioClip2;
-                    audioSource.Play();
                     var obj = m_fxLayer.transform.FindChild("Flood").FindChild("flood");
                     obj.gameObject.SetActive(true);
                     obj.transform.GetComponent<ParticleSystem>().Play();
-                   
 
                 }
                 break;
             case DisasterType.eEarthquake:
-                 audioSource.clip = audioClip3;
-                    audioSource.Play();
                 float rad = Random.Range(0, 360);
                 m_field.transform.position = new Vector3(Mathf.Sin(rad * 180 / Mathf.PI)*0.02f, Mathf.Cos(rad * 180 / Mathf.PI) * 0.02f, 0)
                     + m_stageOrigin;
                 break;
             case DisasterType.eEruption:
                 {
-                    audioSource.clip = audioClip4;
-                    audioSource.Play();
                     var obj = m_fxLayer.transform.FindChild("Eruption").FindChild("onScreen");
                     obj.transform.gameObject.SetActive(true);
                     var color = obj.GetComponent<SpriteRenderer>().color;
@@ -172,8 +153,6 @@ public class DisasterManager : MonoBehaviour
                 break;
             case DisasterType.eTyphoon:
                 {
-                    audioSource.clip = audioClip5;
-                    audioSource.Play();
                     var obj = m_fxLayer.transform.FindChild("Typhoon");
                     obj.FindChild("onScreen").gameObject.SetActive(true);
                     var color = obj.FindChild("onScreen").GetComponent<SpriteRenderer>().color;
@@ -216,7 +195,6 @@ public class DisasterManager : MonoBehaviour
                 {
                     var obj = m_fxLayer.transform.FindChild("Flood").FindChild("Water");
                     obj.transform.gameObject.SetActive(true);
-                 
                     float faze = -1;
                     if (obj.transform.position.x < 5 && !m_animFlg)
                     {
@@ -290,7 +268,6 @@ public class DisasterManager : MonoBehaviour
         {
             case DisasterType.eThunder:
                 {
-                    audioSource.Stop();
                     var obj = m_fxLayer.transform.FindChild("Thunder").FindChild("onScreen");
                     obj.transform.gameObject.SetActive(false);
                     m_fxLayer.transform.FindChild("Thunder").FindChild("thunder").transform.gameObject.SetActive(false);
@@ -302,8 +279,6 @@ public class DisasterManager : MonoBehaviour
                 break;
             case DisasterType.eFlood:
                 {
-                    audioSource.Stop();
-
                     var obj = m_fxLayer.transform.FindChild("Flood");
                     obj.FindChild("flood").gameObject.SetActive(false);
                     obj.FindChild("Water").gameObject.SetActive(false);
@@ -314,7 +289,6 @@ public class DisasterManager : MonoBehaviour
                 }
                 break;
             case DisasterType.eEarthquake:
-                audioSource.Stop();
                 m_field.transform.position = m_stageOrigin;
                 m_type = DisasterType.eNull;
                 m_state = DisasterState.eFin;
@@ -328,13 +302,11 @@ public class DisasterManager : MonoBehaviour
                     fade = 0;
                     m_type = DisasterType.eNull;
                     m_state = DisasterState.eFin;
-                    audioSource.Stop();
                     m_isEnd = true;
                 }
                 break;
             case DisasterType.eTyphoon:
                 {
-                    audioSource.Stop();
                     var obj = m_fxLayer.transform.FindChild("Typhoon");
                     obj.FindChild("rain").gameObject.SetActive(false);
                     obj.FindChild("tornado").gameObject.SetActive(false);

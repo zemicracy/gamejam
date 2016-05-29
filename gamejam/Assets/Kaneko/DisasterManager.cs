@@ -227,7 +227,7 @@ public class DisasterManager : MonoBehaviour
                     }
                     else if(particleSystem.isStopped)
                     {
-                        m_animTime = 0;
+                        m_animTime = -1;
                     }
                 }
                 break;

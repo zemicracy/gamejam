@@ -32,7 +32,7 @@ public class Player : MonoBehaviour
         {
             Debug.Log("dead" + m_nowStay);
             m_deadTime += Time.deltaTime;
-            anim.SetBool("DieFlag", true);
+            anim.SetBool("Die", true);
             if (m_deadTime > 5)
             {
                 Player_life = 0;

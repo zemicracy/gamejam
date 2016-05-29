@@ -49,12 +49,7 @@ public class GameManager : MonoBehaviour {
     }
 	// Update is called once per frame
 	void Update () {
-        // プレイヤー死んだら
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            // 終了
-            m_state = eState.eEnd;
-        }
+        
         mRun();
 
         mEnd();

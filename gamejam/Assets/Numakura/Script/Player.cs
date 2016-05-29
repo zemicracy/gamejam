@@ -5,10 +5,6 @@ public class Player : MonoBehaviour {
     [SerializeField]
     private GameObject m_field;
 
-    [SerializeField]
-    private GameObject m_disaster;
-
-    private DisasterManager.DisasterType m_type;
 
     private Animator anim;
     public Vector2 speed = new Vector2(0.5f, 0.5f);
@@ -46,6 +42,10 @@ public class Player : MonoBehaviour {
             anim.SetBool("Walk", false);
         }
 
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            Player_life -= 1;
+        }
 
         if (Player_life == 0)
         {
@@ -94,8 +94,6 @@ public class Player : MonoBehaviour {
 
     void OnTriggerStay2D(Collider2D colider)
     {
-        m_type= m_disaster.GetComponent<DisasterManager>().mGetType();
-
         if (colider.gameObject.tag == "Wall")
         {
             Debug.Log("wall");
@@ -106,8 +104,7 @@ public class Player : MonoBehaviour {
 
             if (Input.GetKeyDown(KeyCode.A))
             {
-                gameObject.tag = "Volcano";
-                Debug.Log(gameObject.tag);
+                Debug.Log("Volcano");
             }
         }
 
@@ -125,22 +122,6 @@ public class Player : MonoBehaviour {
                 Debug.Log("Cave");
             }
         }
-        if (colider.gameObject.tag == "Upland")
-        {
-            if (Input.GetKeyDown(KeyCode.A))
-            {
-                Debug.Log("Upland");
-            }
-        }
-        if (colider.gameObject.tag == "LightningRod")
-        {
-            if (Input.GetKeyDown(KeyCode.A))
-            {
-                Debug.Log("LightRod");
-            }
-        }
-
-
 
 
     }

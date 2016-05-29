@@ -54,6 +54,8 @@ public class Score : MonoBehaviour {
 
     void HighScoreUpdate()
     {
+        Debug.Log("score" + score);
+        Debug.Log("highScore"+Ranking_Score[0]);
        
         //ハイスコア更新
 

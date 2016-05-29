@@ -10,6 +10,8 @@ public class Fade : MonoBehaviour
     [SerializeField]
     GameObject fadeImage;
     SpriteRenderer sprite;
+
+    string next;
     // Use this for initialization
     void Start()
     {
@@ -27,7 +29,7 @@ public class Fade : MonoBehaviour
             if (a > 1)
             {
                 flg = false;
-                Application.LoadLevel("MainScene");
+                Application.LoadLevel(next);
             }
         }
 
@@ -35,8 +37,9 @@ public class Fade : MonoBehaviour
 
     float m_alpha = 0f;
 
-    public void FadeStart()
+    public void FadeStart(string name)
     {
+        next = name;
         flg = true;
     }
 }

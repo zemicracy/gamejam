@@ -15,7 +15,7 @@ public class InputScore : MonoBehaviour {
 	void Update () {
         time += Time.deltaTime;
         Debug.Log(time);
-        if (time > 5)
+        if (time > 3)
         {
                 Input();
         }

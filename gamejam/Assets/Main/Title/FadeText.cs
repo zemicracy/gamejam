@@ -20,7 +20,7 @@ public class FadeText : MonoBehaviour {
 	void Update () {
         if (Input.anyKeyDown)
         {
-            fade.FadeStart();
+            fade.FadeStart("MainScene");
         }
 
         transform.GetComponent<Text>().color = new Color(1, 1, 1, alpha);

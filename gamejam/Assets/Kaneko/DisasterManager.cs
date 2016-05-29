@@ -8,6 +8,8 @@ public class DisasterManager : MonoBehaviour
     private GameObject m_field;
     [SerializeField]
     private GameObject m_fxLayer;
+    [SerializeField]
+    private GameObject m_player;
 
     public enum DisasterType
     {
@@ -128,7 +130,7 @@ public class DisasterManager : MonoBehaviour
                 break;
             case DisasterType.eEarthquake:
                 float rad = Random.Range(0, 360);
-                m_field.transform.position = new Vector3(Mathf.Sin(rad * 180 / Mathf.PI)*0.2f, Mathf.Cos(rad * 180 / Mathf.PI) * 0.2f, 0)
+                m_field.transform.position = new Vector3(Mathf.Sin(rad * 180 / Mathf.PI)*0.02f, Mathf.Cos(rad * 180 / Mathf.PI) * 0.02f, 0)
                     + m_stageOrigin;
                 break;
             case DisasterType.eEruption:
@@ -182,8 +184,7 @@ public class DisasterManager : MonoBehaviour
                     var obj = m_fxLayer.transform.FindChild("Thunder").FindChild("thunder");
                     obj.gameObject.SetActive(true);
 
-                    Debug.Log(m_field.transform.parent.FindChild("Player").transform.position);
-                    obj.position = m_field.transform.parent.FindChild("Player").transform.position;
+                    obj.position = m_player.transform.position;
                     obj.Translate(new Vector3(0, 30, 0));
                 }
                 break;
@@ -211,7 +212,7 @@ public class DisasterManager : MonoBehaviour
             case DisasterType.eEarthquake:
                 float rad = Random.Range(0, 360);
                 float power = m_animTime / 2 < 1.0f ? m_animTime / 10: 1;
-                m_field.transform.position = new Vector3(Mathf.Sin(rad * 180 / Mathf.PI) * 2 * power, Mathf.Cos(rad * 180 / Mathf.PI) * 2 * power, 0)
+                m_field.transform.position = new Vector3(Mathf.Sin(rad * 180 / Mathf.PI) * 0.2f * power, Mathf.Cos(rad * 180 / Mathf.PI) * 0.2f * power, 0)
                     + m_stageOrigin;
 
                 break;

@@ -354,7 +354,11 @@ public class DisasterManager : MonoBehaviour
     {
         return m_isEnd;
     }
-
+    
+    public DisasterType mGetType()
+    {
+        return m_type;
+    }
 
 
 

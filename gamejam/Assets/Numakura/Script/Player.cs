@@ -46,7 +46,6 @@ public class Player : MonoBehaviour {
             anim.SetBool("Walk", false);
         }
 
-
         if (Player_life == 0)
         {
             Application.LoadLevel("GameOver");
@@ -103,7 +102,6 @@ public class Player : MonoBehaviour {
 
         if (colider.gameObject.tag == "Volcano")
         {
-
             if (Input.GetKeyDown(KeyCode.A))
             {
                 gameObject.tag = "Volcano";
